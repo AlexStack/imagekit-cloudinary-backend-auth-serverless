@@ -69,8 +69,8 @@ function cloudinaryAuth(req, res) {
   res.json(rs);
 }
 
-app.get("/imageKitAuth", imageKitAuth);
-app.get("/cloudinaryAuth", cloudinaryAuth);
+app.get(process.env.API_BASE + "/imageKitAuth", imageKitAuth);
+app.get(process.env.API_BASE + "/cloudinaryAuth", cloudinaryAuth);
 
 
 
@@ -79,7 +79,7 @@ const isServerless = !!(process.env.LAMBDA_TASK_ROOT || process.env.AWS_LAMBDA_F
 if (isServerless) {
   module.exports.handler = serverless(app);
 } else {
-  app.listen(5001, () => {
+  app.listen(5002, () => {
     console.log(`Server started...`);
   });
 }
