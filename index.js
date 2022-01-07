@@ -69,8 +69,8 @@ function cloudinaryAuth(req, res) {
   res.json(rs);
 }
 
-app.get(process.env.API_BASE + "/imageKitAuth", imageKitAuth);
-app.get(process.env.API_BASE + "/cloudinaryAuth", cloudinaryAuth);
+app.post(process.env.API_BASE + "/imageKitAuth", imageKitAuth);
+app.post(process.env.API_BASE + "/cloudinaryAuth", cloudinaryAuth);
 
 
 
