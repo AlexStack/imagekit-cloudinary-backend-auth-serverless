@@ -1,7 +1,8 @@
 const serverless = require("serverless-http");
 const express = require("express");
 const ImageKit = require("imagekit");
-const crypto = require('crypto')
+const crypto = require('crypto');
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 
@@ -30,7 +31,16 @@ app.use(express.json());
  */
 require("dotenv").config();
 
-
+let corsOptions = {
+  origin: process.env.CORS_ORIGIN || [/localhost/, /\.test$/],
+};
+if (typeof process.env.CORS_ORIGIN == 'string' && process.env.CORS_ORIGIN.startsWith('[')) {
+  const corsStr = process.env.CORS_ORIGIN.replace('[', '').replace(']', '').replace(/ /g, '');
+  const corsAry = corsStr.split(',');
+  corsOptions.origin = corsAry;
+}
+console.log(corsOptions);
+app.use(cors(corsOptions));
 
 function imageKitAuth(req, res) {
   const keys = {
@@ -77,8 +87,6 @@ function cloudinaryAuth(req, res) {
 
 app.post(process.env.API_BASE + "/imageKitAuth", imageKitAuth);
 app.post(process.env.API_BASE + "/cloudinaryAuth", cloudinaryAuth);
-
-
 
 const isServerless = !!(process.env.LAMBDA_TASK_ROOT || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
