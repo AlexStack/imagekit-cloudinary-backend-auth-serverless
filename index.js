@@ -1,3 +1,4 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const ImageKit = require("imagekit");
 const crypto = require('crypto')
@@ -71,6 +72,14 @@ function cloudinaryAuth(req, res) {
 app.get("/imageKitAuth", imageKitAuth);
 app.get("/cloudinaryAuth", cloudinaryAuth);
 
-app.listen(5001, () => {
-  console.log(`Server started...`);
-});
+
+
+const isServerless = !!(process.env.LAMBDA_TASK_ROOT || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
+if (isServerless) {
+  module.exports.handler = serverless(app);
+} else {
+  app.listen(5001, () => {
+    console.log(`Server started...`);
+  });
+}
