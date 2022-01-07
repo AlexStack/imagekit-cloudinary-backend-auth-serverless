@@ -6,7 +6,13 @@ const app = express();
 app.use(express.json());
 
 /**
- * Install: npm init && npm install && node index.js
+ * Netlify install:
+ * function dir set to . (dot)
+ * set env variables, e.g. API_BASE=/.netlify/functions/index
+ * API POST DEMO:
+ * https://cloudinary-imagekit-auth.netlify.app/.netlify/functions/index/imageKitAuth
+ * 
+ * Local Install: npm init && npm install && node index.js
  * API POST: http://localhost:5001/imageKitAuth
  * API POST: http://localhost:5001/cloudinaryAuth
  * 
@@ -48,7 +54,7 @@ function cloudinaryAuth(req, res) {
 
   timestamp = Math.round(new Date().getTime() / 1000);
   eager = process.env.CLOUDINARY_API_EAGER || 'c_limit,w_1600';
-  public_id = 'ctx.query.public_id';
+  public_id = req.query.public_id || 'def_public_id';
   serializedSortedParameters = 'eager=' + eager +
     '&public_id=' + public_id +
     '&timestamp=' + timestamp +
